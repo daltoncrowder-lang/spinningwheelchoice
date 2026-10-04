@@ -1,0 +1,49 @@
+---
+import '../styles/global.css';
+interface Props { title: string; description: string; schema?: object[] }
+const { title, description, schema = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="google-adsense-account" content="ca-pub-5419958342829322" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:type" content="article" />
+  <link rel="sitemap" href="/guides/sitemap-index.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito+Sans:wght@400;800&display=swap" rel="stylesheet" />
+  {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="/guides/"><span class="wheel-mark" aria-hidden="true"></span>SpinningWheelChoice Guides</a>
+      <a class="spin-link" href="/">Spin a wheel</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <slot />
+  </main>
+  <footer class="site-foot">
+    <div class="wrap">
+      <nav aria-label="Site">
+        <a href="/">Wheel spinner</a>
+        <a href="/guides/">All guides</a>
+        <a href="/about">About</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <p>© {new Date().getFullYear()} SpinningWheelChoice. A free wheel spinner with no sign-up.</p>
+    </div>
+  </footer>
+</body>
+</html>

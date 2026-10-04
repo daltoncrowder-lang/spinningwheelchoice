@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const all = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
+const wheels = all.filter((g) => g.data.kind === 'wheel');
+const explainers = all.filter((g) => g.data.kind === 'explainer');
+const title = 'Spinning Wheel Guides: Ideas, Uses and Fair Picks';
+const description = 'Guides for every kind of spinning wheel: yes or no, classroom name pickers, chore wheels, giveaways, team picks, and how random online wheels really are.';
+const schema = [{
+  '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description,
+  url: 'https://spinningwheelchoice.com/guides/',
+  hasPart: all.map((g) => ({ '@type': 'Article', headline: g.data.title, url: `https://spinningwheelchoice.com/guides/${g.id}/` })),
+}];
+---
+<Base title={title} description={description} schema={schema}>
+  <div class="hub-hero">
+    <span class="wheel-mark big" aria-hidden="true"></span>
+    <h1>Spinning wheel guides</h1>
+  </div>
+  <p>Practical write-ups for the wheels people actually spin: what to put on each one, how to run it fairly, and ideas you may not have tried. Every guide links straight to the free wheel spinner, so you can read and spin in the same minute.</p>
+
+  <h2>Wheels by use</h2>
+  <ul class="guide-list">
+    {wheels.map((g) => <li><a href={`/guides/${g.id}/`}><strong>{g.data.title}</strong><span>{g.data.description}</span></a></li>)}
+  </ul>
+
+  <h2>How wheels work</h2>
+  <ul class="guide-list">
+    {explainers.map((g) => <li><a href={`/guides/${g.id}/`}><strong>{g.data.title}</strong><span>{g.data.description}</span></a></li>)}
+  </ul>
+</Base>
