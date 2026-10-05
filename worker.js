@@ -12,7 +12,12 @@ export default {
     if (url.hostname === 'www.' + APEX) {
       return Response.redirect(`https://${APEX}${url.pathname}${url.search}`, 301);
     }
-
+    // Google Search Console verification
+    if (url.pathname === '/google83303e63b8dc7ca9.html') {
+      return new Response('google-site-verification: google83303e63b8dc7ca9.html', {
+        headers: { 'content-type': 'text/html; charset=utf-8' },
+      });
+    }
     // Guides: serve from the Worker's static files
     if (url.pathname === '/guides' || url.pathname.startsWith('/guides/')) {
       return env.ASSETS.fetch(request);
